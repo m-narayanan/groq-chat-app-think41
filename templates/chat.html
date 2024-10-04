@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Chat with AI</h1>
+        <div id="chat-box"></div>
+        <textarea id="user-input" placeholder="Type your message..."></textarea>
+        <button id="send-button">Send</button>
+    </div>
+
+    <script>
+        document.getElementById('send-button').onclick = function() {
+            const userMessage = document.getElementById('user-input').value;
+            if (userMessage.trim() === "") return;
+
+            addMessage("You: " + userMessage);
+            document.getElementById('user-input').value = "";
+
+            fetch('/send_message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: userMessage })
+            })
+            .then(response => response.json())
+            .then(data => {
+                addMessage("AI: " + data.response);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                addMessage("AI: Sorry, I encountered an error.");
+            });
+        };
+
+        function addMessage(message) {
+            const chatBox = document.getElementById('chat-box');
+            chatBox.innerHTML += `<p>${message}</p>`;
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
+        }
+    </script>
+</body>
+</html>
