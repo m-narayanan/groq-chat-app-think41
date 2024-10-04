@@ -1,6 +1,4 @@
-Here’s the `README.md` file tailored for your Groq Chat Application:
 
-```markdown
 # Groq Chat Application
 
 This is a simple chat application that uses the GROQ API to enable a user to chat with an AI model. The application is built using Python's Flask framework for the backend and HTML/CSS for the frontend.
